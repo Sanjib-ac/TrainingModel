@@ -1,4 +1,4 @@
-# Compile with minimum :  
+# Compile :  
 pyinstaller trainModel.py --onefile --collect-all torch --debug noarchive   --consol
  # Run:
  trainModel.exe --task segment --model path\model.pt --data path\dataSet_MovingProduct_seg.yaml --epochs 100 --name test --project .\testFolder  
