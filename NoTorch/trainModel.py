@@ -24,6 +24,7 @@ def parse_args():
 
     parser = argparse.ArgumentParser(description="Train a model from the command line with all "
                                                  "available parameters")
+    parser.add_argument("--TorchLocation", type=str, required=True, help="Path to the unpacked libtorch_cuda124 folder")
     parser.add_argument("--task", type=str, choices=["detect", "segment", "classify"],
                         default="detect", help="Task type: detect (default), segment, or classify")
 
@@ -78,6 +79,11 @@ def main():
         args = parse_args()
         if args is None:
             return
+        import torch
+        print("CUDA available:", torch.cuda.is_available())
+        print("Using TorchLocation:", args.TorchLocation)
+        print(f"Arguments parsed successfully: {args}")
+
         # Verify files exist
         print(f"Checking model file: {args.model}")
         if not os.path.exists(args.model):
