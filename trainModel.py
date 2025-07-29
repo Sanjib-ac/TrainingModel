@@ -34,7 +34,7 @@ def parse_args():
                         help="Dataset config YAML (train/val paths + class names)")
     parser.add_argument("--pretrained", type=str, default=None,
                         help="Optional pretrained weights (.pt)")
-    parser.add_argument("--epochs", type=int, default=100,
+    parser.add_argument("--epochs", type=int, default=50,
                         help="Total training epochs")
     parser.add_argument("--batch", type=int, default=4,
                         help="Batch size per GPU")
@@ -49,11 +49,12 @@ def parse_args():
     parser.add_argument("--name", type=str, default="ADSTraining",
                         help="Trained model name (folder under project)")
 
-    # Dataloader & caching
-    parser.add_argument("--workers", type=int, default=8,
-                        help="Number of data loading workers")
-    parser.add_argument("--rect", action="store_true",
-                        help="Rectangular training")
+    #
+    parser.add_argument("--workers", type=int, default=8, help="Number of data loading workers")
+    parser.add_argument("--rect", action="store_true", help="Rectangular training")
+    parser.add_argument("--single_cls", action="store_true", help="Treats all classes in as a single class")
+    parser.add_argument("--multi_scale", action="store_true", help="increasing/decreasing imgsz by up to a factor of "
+                                                                   "0.5")
 
     # Optimizer & LR scheduler
     parser.add_argument("--optimizer", type=str, default="SGD",
@@ -69,6 +70,8 @@ def parse_args():
                                                                    "degree range, improving the model's ability to "
                                                                    "recognize objects at various orientations.")
     parser.add_argument("--bgr", type=float, default=0.0)
+    parser.add_argument("--mixup", type=float, default=0.0, help="Blends two images and their labels, creating a "
+                                                                 "composite image")
 
     return parser.parse_args()
 
@@ -120,6 +123,9 @@ def main():
             "name": args.name,
             "workers": args.workers,
             "rect": args.rect,
+            "single_cls": args.single_cls,
+            "multi_scale": args.multi_scale,
+            "mixup": args.mixup,
             "optimizer": args.optimizer,
             "patience": args.patience,
             "verbose": args.verbose,
