@@ -5,11 +5,11 @@ import sys
 import yaml
 from ultralytics import YOLO
 
-print("CUDA available:", torch.cuda.is_available())
-print("CUDA version:", torch.version.cuda)
-print("Current working directory:", os.getcwd())
-print("Python executable:", sys.executable)
-print("Arguments received:", sys.argv)
+# print("CUDA available:", torch.cuda.is_available())
+# print("CUDA version:", torch.version.cuda)
+# print("Current working directory:", os.getcwd())
+# print("Python executable:", sys.executable)
+# print("Arguments received:", sys.argv)
 
 
 def is_multiprocessing_worker():
@@ -42,12 +42,15 @@ def parse_args():
                         help="Input image size (pixels)")
     parser.add_argument("--device", type=str, default="0",
                         help="CUDA device(s), e.g., '0', '0,1' or 'cpu'")
+    parser.add_argument("--val", action="store_true", default=False, help="Enables validation during training")
 
     # Saving & resuming
     parser.add_argument("--project", type=str, default="train",
                         help="Root directory for saving results")
     parser.add_argument("--name", type=str, default="ADSTraining",
                         help="Trained model name (folder under project)")
+    parser.add_argument("--exist_ok", action="store_true", default=False, help="If True, allows overwriting of an "
+                                                                               "existing project/name directory. ")
 
     #
     parser.add_argument("--workers", type=int, default=8, help="Number of data loading workers")
@@ -77,6 +80,10 @@ def parse_args():
 
 
 def main():
+    print("CUDA available:", torch.cuda.is_available())
+    print("CUDA version:", torch.version.cuda)
+    print("CWD:", os.getcwd())
+    print("Python exe:", sys.executable)
     try:
         args = parse_args()
         if args is None:
